@@ -17,6 +17,16 @@ The project demonstrates relational database design using EER modeling, ER → R
 
 ---
 
+## Architecture
+
+Frontend: Next.js (App Router)
+
+Backend: Express REST API
+
+Database: MySQL relational schema derived from an EER design and implemented through subtype tables, associative relations, and weak entities
+
+---
+
 ## Features
 
 ### Customer Features
