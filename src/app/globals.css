@@ -1,0 +1,273 @@
+@import "tailwindcss";
+
+/* ── Keel design tokens ─────────────────────────────────────────── */
+:root {
+  --ink:       #1A1714;
+  --ink-2:     #2E2825;
+  --ink-3:     #5A524C;
+  --ink-4:     #8B817A;
+  --rule:      #E5DFD7;
+  --rule-2:    #D9D2C8;
+  --paper:     #F5F0E8;
+  --paper-2:   #EFE8DC;
+  --paper-3:   #FAF6EE;
+  --card:      #FFFFFF;
+  --accent:    oklch(0.38 0.13 15);
+  --accent-2:  oklch(0.30 0.13 15);
+  --accent-ink:#FFFFFF;
+  --positive:  oklch(0.55 0.09 150);
+  --negative:  oklch(0.55 0.15 30);
+  --info:      oklch(0.52 0.09 240);
+
+  --serif: var(--font-playfair), "Playfair Display", Georgia, serif;
+  --sans:  var(--font-inter-tight), "Inter", -apple-system, system-ui, sans-serif;
+  --mono:  var(--font-ibm-plex-mono), ui-monospace, "SF Mono", monospace;
+
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 14px;
+}
+
+@theme inline {
+  --color-background: var(--paper);
+  --color-foreground: var(--ink);
+  --font-sans: var(--sans);
+  --font-mono: var(--mono);
+  --font-serif: var(--serif);
+}
+
+/* ── Remap Tailwind's slate scale → Keel warm-earth tones ───────── */
+/* This makes bg-slate-*, border-slate-*, text-slate-* etc. use      */
+/* the Keel palette automatically across every page.                 */
+@theme {
+  --color-slate-50:  #FAF6EE;
+  --color-slate-100: #EFE8DC;
+  --color-slate-200: #E5DFD7;
+  --color-slate-300: #D9D2C8;
+  --color-slate-400: #8B817A;
+  --color-slate-500: #8B817A;
+  --color-slate-600: #5A524C;
+  --color-slate-700: #2E2825;
+  --color-slate-800: #1A1714;
+  --color-slate-900: #1A1714;
+
+  /* Badge: emerald → Keel positive green */
+  --color-emerald-50:  oklch(0.97 0.03 150);
+  --color-emerald-100: oklch(0.92 0.05 150);
+  --color-emerald-200: oklch(0.86 0.07 150);
+  --color-emerald-600: oklch(0.55 0.09 150);
+  --color-emerald-700: oklch(0.50 0.09 150);
+  --color-emerald-800: oklch(0.44 0.09 150);
+
+  /* Badge: amber → Keel ochre accent */
+  --color-amber-50:  oklch(0.97 0.04 62);
+  --color-amber-100: oklch(0.92 0.07 62);
+  --color-amber-700: oklch(0.58 0.11 62);
+  --color-amber-800: oklch(0.52 0.11 62);
+
+  /* Badge: red → Keel negative */
+  --color-red-50:  oklch(0.97 0.04 30);
+  --color-red-100: oklch(0.92 0.07 30);
+  --color-red-200: oklch(0.87 0.09 30);
+  --color-red-600: oklch(0.55 0.15 30);
+  --color-red-700: oklch(0.50 0.15 30);
+  --color-red-800: oklch(0.44 0.15 30);
+
+  /* Badge: blue → Keel info */
+  --color-blue-100: oklch(0.92 0.05 240);
+  --color-blue-700: oklch(0.52 0.09 240);
+
+  /* Badge: violet → muted purple */
+  --color-violet-100: oklch(0.92 0.05 290);
+  --color-violet-700: oklch(0.52 0.09 290);
+}
+
+/* ── Dark theme tokens ──────────────────────────────────────────── */
+[data-theme="dark"] {
+  --ink:       #F4EEE3;
+  --ink-2:     #DDD5C7;
+  --ink-3:     #9A8F82;
+  --ink-4:     #6B6158;
+  --rule:      #2A2520;
+  --rule-2:    #35302A;
+  --paper:     #13110F;
+  --paper-2:   #1C1915;
+  --paper-3:   #24201B;
+  --card:      #1A1714;
+  --accent-ink:#FFFFFF;
+
+  /* Re-map Tailwind slate scale to dark Keel tones.
+     Works because @theme (without inline) generates var() references. */
+  --color-slate-50:  #24201B;
+  --color-slate-100: #1C1915;
+  --color-slate-200: #2A2520;
+  --color-slate-300: #35302A;
+  --color-slate-400: #6B6158;
+  --color-slate-500: #6B6158;
+  --color-slate-600: #9A8F82;
+  --color-slate-700: #DDD5C7;
+  --color-slate-800: #F4EEE3;
+  --color-slate-900: #F4EEE3;
+}
+
+/* bg-white on cards needs an explicit override since white isn't a variable */
+[data-theme="dark"] .bg-white {
+  background-color: var(--card);
+}
+
+[data-theme="dark"] .keel-nav-item.active {
+  background: var(--accent);
+  color: #FFFFFF;
+}
+
+/* Primary action buttons use bg-slate-900 text-white — in dark mode
+   --color-slate-900 becomes near-white (ink), making them invisible.
+   Override to use the accent color so they remain visually distinct. */
+[data-theme="dark"] .bg-slate-900 {
+  background-color: var(--accent) !important;
+  color: var(--accent-ink) !important;
+}
+[data-theme="dark"] .hover\:bg-slate-800:hover {
+  background-color: var(--accent-2) !important;
+  color: var(--accent-ink) !important;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Keel utility classes ────────────────────────────────────────── */
+.keel-wordmark {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--ink);
+}
+.keel-wordmark::before {
+  content: "";
+  width: 10px; height: 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  display: inline-block;
+  transform: translateY(1px);
+  flex-shrink: 0;
+}
+
+.keel-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 6px;
+  color: var(--ink-2);
+  font-size: 14px;
+  font-weight: 450;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .1s ease, color .1s ease;
+}
+.keel-nav-item:hover { background: var(--paper-3); color: var(--ink); }
+.keel-nav-item.active { background: var(--ink); color: var(--paper); }
+
+.keel-card {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  padding: 20px;
+}
+
+.keel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: var(--sans);
+}
+.keel-badge.ok   { color: var(--positive); background: color-mix(in oklch, var(--positive) 10%, var(--card)); }
+.keel-badge.warn { color: oklch(0.55 0.13 70); background: color-mix(in oklch, oklch(0.55 0.13 70) 10%, var(--card)); }
+.keel-badge.info { color: var(--info); background: color-mix(in oklch, var(--info) 10%, var(--card)); }
+.keel-badge.bad  { color: var(--negative); background: color-mix(in oklch, var(--negative) 10%, var(--card)); }
+
+.keel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .15s ease;
+}
+.keel-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,23,20,0.15); }
+.keel-btn.ghost { background: transparent; color: var(--ink); border-color: var(--rule-2); }
+.keel-btn.ghost:hover { border-color: var(--ink); }
+.keel-btn.accent { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+.keel-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--rule-2);
+  border-radius: var(--r-md);
+  background: var(--card);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  transition: border-color .15s ease;
+}
+.keel-input:focus { outline: none; border-color: var(--ink); }
+
+.keel-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-family: var(--sans);
+}
+
+table { width: 100%; border-collapse: collapse; }
+th {
+  text-align: left; padding: 12px 16px 10px;
+  font-size: 11px; font-weight: 500;
+  color: var(--ink-3); letter-spacing: 0.08em; text-transform: uppercase;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--sans);
+}
+td {
+  padding: 14px 16px; font-size: 14px; color: var(--ink-2);
+  border-bottom: 1px solid var(--rule);
+}
+tr:last-child td { border-bottom: none; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--rule-2); border-radius: 999px; border: 2px solid var(--paper); }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-4); }
