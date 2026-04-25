@@ -13,7 +13,7 @@ This application simulates a simplified online banking platform where:
 - employees review customer requests and manage account status
 - managers make final loan approval decisions and view assignment data
 
-The project demonstrates relational database design using EER modeling, ER -> RM mapping, and a full-stack architecture consisting of a Next.js frontend, Express API server, and MySQL relational database.
+The project demonstrates relational database design using EER modeling, ER → RM mapping, and a full-stack architecture consisting of a Next.js frontend, Express API server, and MySQL relational database.
 
 ---
 
@@ -101,7 +101,7 @@ Authentication & Security:
 
 - JWT authentication
 - bcrypt password hashing
-- role-based access control middleware
+- protected route middleware with employee and manager role checks
 
 ---
 
@@ -167,6 +167,8 @@ mysql -u root < database/init.sql
 
 This is intended to create the `BankDB` database, schema, procedures, and seeded demo data used by the project.
 
+database/init.sql is the authoritative setup script used by the running application.
+
 ### 4. Create the backend env file
 
 Copy `.env.example` to `.env` inside the `server/` folder:
@@ -220,14 +222,14 @@ Customer login is at `/login`, employee/manager login is at `/employee/login`.
 
 ```text
 |-- database/
-|   |-- schema.sql        # relational schema definition
-|   `-- init.sql          # schema + seed data
+|   |-- schema.sql        # base relational schema definition
+|   `-- init.sql          # application schema + seed data + procedures
 |-- server/
 |   |-- index.js          # Express entry point
 |   |-- db.js             # MySQL connection pool
 |   |-- middleware/
 |   |   `-- auth.js       # JWT auth middleware
-|   `-- routes/           # one file per API route
+|   `-- routes/           # API route groups
 |-- src/
 |   |-- app/              # Next.js pages
 |   |-- components/       # shared UI components
